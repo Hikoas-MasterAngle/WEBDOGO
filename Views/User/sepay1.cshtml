@@ -1,0 +1,92 @@
+﻿<style>
+    .confirm-box {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        font-family: 'Roboto', Arial, sans-serif;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        /* Thành công */
+        .confirm-box.success {
+            background: linear-gradient(145deg, #eaffea, #d5f5d5);
+            border: 1px solid #a3dca3;
+            color: #2e7d32;
+        }
+
+            .confirm-box.success h2 {
+                color: #2e7d32;
+                font-size: 1.8em;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .confirm-box.success button {
+                margin-top: 15px;
+                padding: 12px 25px;
+                font-size: 1em;
+                font-weight: bold;
+                color: #ffffff;
+                background-color: #4caf50;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+                .confirm-box.success button:hover {
+                    background-color: #388e3c;
+                }
+
+        /* Không thành công */
+        .confirm-box.error {
+            background: linear-gradient(145deg, #ffeaea, #f5d5d5);
+            border: 1px solid #dca3a3;
+            color: #b71c1c;
+        }
+
+            .confirm-box.error h2 {
+                color: #b71c1c;
+                font-size: 1.8em;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .confirm-box.error button {
+                margin-top: 15px;
+                padding: 12px 25px;
+                font-size: 1em;
+                font-weight: bold;
+                color: #ffffff;
+                background-color: #d32f2f;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+                .confirm-box.error button:hover {
+                    background-color: #c62828;
+                }
+</style>
+
+@if (ViewBag.thongbao == 1)
+{
+    <div class="confirm-box error" style="width: 400px">
+        <h2>Không tìm thấy hóa đơn của bạn</h2>
+        <p>Vui lòng quay lại trang thanh toán để tiếp tục hoặc đợi vài phút và thanh toán lại.</p>
+        <button onclick="location.href='@Url.Action("replacethanhtoan", "User", new {mahd = ViewBag.mahd})'">Quay lại</button>
+    </div>
+}
+else
+{
+    <div class="confirm-box success" style="width: 400px">
+        <h2>Xác nhận thành công</h2>
+        <p>Cảm ơn bạn! Đơn hàng đã được tạo và bạn đã thanh toán thành công.</p>
+        <button onclick="location.href='@Url.Action("TrangChu", "TrangChu")'">Quay lại trang chủ</button>
+    </div>
+}

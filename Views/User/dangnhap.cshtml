@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="~/Content/dangnhap.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Đăng Nhập</title>
+</head>
+<body>
+    <script src="~/Scripts/dangnhap.js" defer></script>
+
+    @if (@ViewBag.thongbao != null && @ViewBag.thongbao == "Sai tài khoản hoặc mật khẩu")
+    {
+        <div class="alert-false alert-primary" role="alert" id="thongbaofalse">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="warning size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <div class="noidungthongbao">
+                <p style="font-weight: bold;">Lỗi</p>
+                <p>@ViewBag.thongbao</p>
+            </div>
+        </div>
+    }
+    else if (TempData["dangkythanhcong"] != null && (bool)TempData["dangkythanhcong"])
+    {
+        <div class="alert-success alert-primary" role="alert" id="thongbaothanhcong">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="success size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <div class="noidungthongbao">
+                <p style="font-weight: bold;">THÀNH CÔNG</p>
+                <p>Chúc mừng bạn đã đăng ký thành công</p>
+            </div>
+        </div>
+    }
+    <div class="all">
+        <form action="@Url.Action("dangnhap", "User")" method="post" class="khungdangnhap">
+            <h1>Đăng Nhập</h1>
+            <div class="input-box">
+                <input type="text" name="taikhoan" placeholder="Tên Tài Khoản" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="matkhau" placeholder="Mật Khẩu" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="quenmatkhau"><a href="@Url.Action("quenmatkhau","User")">Quên Mật Khẩu ?</a></div>
+            <div class="btndangnhap">
+                <button type="submit">Đăng Nhập</button>
+            </div>
+            <div class="chuacotaikhoan">
+                <p>Bạn Chưa Có Tài Khoản ? <a href="@Url.Action("dangky","User")">Đăng ký</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

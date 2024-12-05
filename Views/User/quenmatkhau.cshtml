@@ -1,0 +1,34 @@
+﻿@model WEBDOGO.Models.KHACHHANG
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="@Url.Content("~/Content/dangnhap.css")?v=@DateTime.Now.Ticks">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Đăng Nhập</title>
+</head>
+<body>
+    <div class="all">
+        @using (Html.BeginForm(new { @class = "khungdangnhap", @style = "height: 250px;" }))
+        {
+            <h1>Quên Mật Khẩu</h1>
+            <div class="input-box">
+                @Html.TextBoxFor(m => m.EMAIL, new { @type = "email", @placeholder = "Email", @name = "emailquenmk" })
+                <i class='bx bx-envelope'></i>
+            </div>
+            if(ViewBag.thongbao != null)
+             {
+                 <p style="color: red">@ViewBag.thongbao</p>
+             }
+            <div class="btndangnhap">
+                <button type="submit">Gửi</button>
+            </div>
+        }
+    </div>
+</body>
+</html>

@@ -1,0 +1,289 @@
+﻿@model WEBDOGO.Models.NHANVIENTAICHINH
+@{
+    Layout = null;
+
+    List<SelectListItem> trangthailamviec = new List<SelectListItem>
+{
+    new SelectListItem {Value = "Đang làm", Text = "Đang làm"},
+    new SelectListItem {Value = "Đã Nghỉ Việc", Text = "Đã Nghỉ Việc"},
+    new SelectListItem {Value = "Nghỉ Phép", Text = "Nghỉ Phép"},
+    };
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Sản Phẩm Theo Yêu Cầu</title>
+    <link rel="stylesheet" href="@Url.Content("~/Content/chitietquanlyyeucau.css")?v=@DateTime.Now.Ticks">
+</head>
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Modal chung */
+        #modalMenu {
+            display: none; /* Ban đầu ẩn */
+            position: fixed;
+            z-index: 1050;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Hộp nội dung */
+        .modal-dialog {
+            width: 90%;
+            max-width: 500px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeInModal 0.4s ease;
+        }
+
+        /* Tiêu đề modal */
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .modal-header h5 {
+                margin: 0;
+                font-size: 1.25rem;
+            }
+
+            .modal-header .close {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: white;
+                cursor: pointer;
+            }
+
+        /* Phần nội dung modal */
+        .modal-body {
+            padding: 20px;
+            font-size: 0.95rem;
+        }
+
+            .modal-body .form-group label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                display: block;
+            }
+
+            .modal-body .form-control {
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                padding: 10px;
+            }
+
+        /* Phần footer */
+        .modal-footer {
+            padding: 10px 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+            .modal-footer .btn {
+                padding: 10px 15px;
+                font-size: 0.95rem;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .modal-footer .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+            }
+
+                .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                }
+
+            .modal-footer .btn-primary {
+                background-color: #007bff;
+                color: white;
+            }
+
+                .modal-footer .btn-primary:hover {
+                    background-color: #0056b3;
+                }
+    </style>
+
+    <div class="modal" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Cập nhật mật khẩu</h5>
+                    <button type="button" class="close" aria-label="Close" id="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="txtpassword">Mật khẩu mới</label>
+                        <input type="text" class="form-control" id="txtpassword" />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtreplcaetxtpassword">Nhập lại mật khẩu</label>
+                        <input type="text" class="form-control" id="txtreplcaetxtpassword" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btnSubmit">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Thông tin nhân viên</h2>
+        @using (Html.BeginForm("luucapnhapnvtc", "ADMIN", FormMethod.Post))
+        {
+            <div class="form-row">
+                <!-- Cột 1 -->
+                <div class="form-column">
+                    <div class="form-group" hidden>
+                        <label>Mã nhân viên:</label>
+                        @Html.TextBoxFor(m => m.MANHANVIENTAICHINH, new { @readonly = "readonly" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tên nhân viên:</label>
+                        @Html.TextBoxFor(m => m.TENNHANVIENTAICHINH, new { @readonly = "readonly" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tuổi:</label>
+                        @Html.TextBoxFor(m => m.TUOI, new { @required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DIACHI">Địa Chỉ</label>
+                        @Html.TextBoxFor(m => m.DIACHI, new { @required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SDT">Số Điện Thoại</label>
+                        @Html.TextBoxFor(m => m.SDT, new { @required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SOCCCD">Số CCCD</label>
+                        @Html.TextBoxFor(m => m.SOCCCD, new { @required = "required" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tendangnhap">Tên Đăng Nhập</label>
+                        @Html.TextBoxFor(m => m.TENDANGNHAP, new { @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <!-- Cột 2 -->
+                <div class="form-column">
+
+                    <div class="form-group">
+                        <label for="ngayvaolam">Ngày vào làm:</label>
+                        <input type="text" value="@Model.NGAYVAOLAM" />
+                        @Html.TextBoxFor(m => m.NGAYVAOLAM, new { @type = "date" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trangthailamviec">Trạng thái làm việc:</label>
+                        @Html.DropDownListFor(m => m.TRANGTHAI, trangthailamviec, "Chọn trạng thái làm việc", new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ngaynghilam">Ngày nghỉ làm:</label>
+                        <input type="text" value="@Model.NGAYNGHILAM" />
+                        @Html.TextBoxFor(m => m.NGAYNGHILAM, new { @type = "date" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <button type="submit" class="btn-save" style="background-color: mediumturquoise">Cập nhập</button>
+                <button type="button" class="btn-save" id="btnChangePassword" style="background-color: #B8860B"> Thay đổi mật khẩu </button>
+                <a href="@Url.Action("showtrangquanly","ADMIN")" class="btn-save" style="background-color: gray; margin-top: 50px">Quay lại</a>
+            </div>
+        }
+    </div>
+
+    <script>
+        var modalMenu = document.getElementById("modalMenu");
+        var closeModal = document.getElementById("close");
+        var btnChangePassword = document.getElementById("btnChangePassword");
+        var btnSubmit = document.getElementById("btnSubmit");
+
+        // Hiển thị modal thay đổi mật khẩu
+        btnChangePassword.onclick = function () {
+            modalMenu.style.display = "flex";
+        }
+
+        // Đóng modal
+        closeModal.onclick = function () {
+            modalMenu.style.display = "none";
+        }
+
+        // Khi người dùng click Lưu thay đổi
+        btnSubmit.onclick = function () {
+        var password = document.getElementById("txtpassword").value;
+        var confirmPassword = document.getElementById("txtreplcaetxtpassword").value;
+
+            if (password === confirmPassword && password !== "") {
+                $.ajax({
+                    url: '@Url.Action("UpdateMK", "ADMIN")',
+                    type: 'POST',
+                    data: {
+                        matkhau: password,
+                        id: '@Model.MANHANVIENTAICHINH',
+                        loainhanvien: "nvtc"
+                    },
+                    success: function (data) {
+                        if (data && data.code == 200) {
+                            alert(data.msg);
+                            modalMenu.style.display = "none";
+                            location.reload(); // Tải lại trang sau khi cập nhật
+                        } else {
+                            alert(data?.msg || "Có lỗi không xác định.");
+                        }
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra, vui lòng thử lại.");
+                    }
+                });
+            } else {
+                alert("Mật khẩu không khớp hoặc trống!");
+            }
+        }
+
+
+        // Đóng modal nếu người dùng click ra ngoài modal
+        window.onclick = function (event) {
+            if (event.target === modalMenu) {
+                modalMenu.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
